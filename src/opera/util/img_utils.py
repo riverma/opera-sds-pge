@@ -25,16 +25,30 @@ from collections import namedtuple
 from datetime import datetime
 
 
-def get_dwsx_hls_filename_fields(file_name, julian=True):
+def get_hls_filename_fields(file_name):
+    """
+    Parse the HLS filename into components, change Julian datetime to (YYYYMMDDTHHMMSS)
 
+    Parameters
+    ----------
+    file_name : str
+        Name of the HLS file
+
+    Returns
+    -------
+    fields : Ordered Dictionary
+        Keys are basic descriptions of the value
+        Values are the fields parsed from the HLS file_name
+
+
+    """
     Fields = namedtuple('Fields', ['product', 'short_name', 'MGRS_tile_id', 'time_of_acquisition',
                                    'collection_version', 'sub_version', 'band_or_QA_fmask', 'data_format'])
     fields = Fields._make(file_name.split('.'))._asdict()
-
-    if julian:
-        julian_time = fields['time_of_acquisition'].split('T')
-        julian_time[0] = str(datetime.strptime(julian_time[0], '%Y%j').date()).replace('-', '')
-        fields['time_of_acquisition'] = 'T'.join(julian_time)
+    # Convert to 'YYYYMMDDTHHMMSS' format from Julian datetime
+    julian_time = fields['time_of_acquisition'].split('T')
+    julian_time[0] = str(datetime.strptime(julian_time[0], '%Y%j').date()).replace('-', '')
+    fields['time_of_acquisition'] = 'T'.join(julian_time)
 
     return fields
 
