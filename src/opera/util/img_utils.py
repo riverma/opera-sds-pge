@@ -54,5 +54,5 @@ def get_hls_filename_fields(file_name):
 
 
 if __name__ == '__main__':
-    x = get_dwsx_hls_filename_fields("HLS.S30.T53SMS.2020276T013701.v1.5.B01.tif")
+    x = get_hls_filename_fields("HLS.S30.T53SMS.2020276T013701.v1.5.B01.tif")
     print(x)
